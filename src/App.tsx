@@ -1,6 +1,6 @@
+import { useState, type ChangeEvent } from "react";
 import { Input } from "@heeler/ui";
 import "./App.css";
-import { useState, type ChangeEvent } from "react";
 
 export const App = () => {
   const [locationSearch, setLocationSearch] = useState("");
@@ -22,11 +22,17 @@ export const App = () => {
 
   return (
     <>
-      <header className="flex justify-end px-6 py-4 border-b border-gray-200">
+      <header className="flex justify-between items-center px-6 py-4">
+        <div>
+          <h2 className="text-2xl font-bold text-blue-700">Colorcast</h2>
+          <h3 className="text-lg text-gray-600 text-orange-600">
+            Weather at a colorful glance
+          </h3>
+        </div>
         <div className="flex gap-2 items-center">
           <Input
             color="blue"
-            placeholder="Location"
+            placeholder="City or zip code"
             value={locationSearch}
             onChange={handleLocationChange}
             onKeyDown={handleKeyDown}
