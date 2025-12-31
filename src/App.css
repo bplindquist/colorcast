@@ -1,7 +1,35 @@
 #root {
   margin: 0 auto;
-  max-width: 1280px;
-  padding: 2rem;
-  text-align: center;
+}
+
+/* Rainbow gradient header */
+.header-gradient {
+  background: linear-gradient(
+    135deg,
+    #ef4444 0%,
+    #f97316 16%,
+    #eab308 32%,
+    #22c55e 48%,
+    #3b82f6 64%,
+    #6366f1 80%,
+    #8b5cf6 100%
+  );
+}
+
+/* Rainbow icon animation for welcome state */
+.rainbow-icon-container {
+  animation: gentle-pulse 3s ease-in-out infinite;
+}
+
+@keyframes gentle-pulse {
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.05);
+    opacity: 0.9;
+  }
 }
 
