@@ -9,7 +9,7 @@ import {
 } from "react-icons/wi";
 
 import { TemperatureCard, WeatherCard } from "@/components/WeatherCard";
-import { getWeatherByZip } from "@/data/mockWeather";
+import { getWeatherByZip } from "@/data/getWeatherByZip";
 import type { OpenWeatherApiData } from "@/types/weather";
 import { getColorForValue } from "@/utils/colorScale";
 
