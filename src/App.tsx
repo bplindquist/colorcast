@@ -78,6 +78,15 @@ export const App = () => {
               <h3 className="text-2xl sm:text-3xl font-bold text-indigo-600">
                 {weatherData.name}
               </h3>
+              <p className="text-sm text-gray-400 mt-1">
+                {weatherData.coord.lat.toFixed(2)}°N,{" "}
+                {weatherData.coord.lon.toFixed(2)}°W
+              </p>
+              {weatherData.weather[0] && (
+                <p className="text-base text-gray-500 mt-2 capitalize">
+                  {weatherData.weather[0].description}
+                </p>
+              )}
             </div>
 
             <TemperatureCard temperature={weatherData.main.temp} />
