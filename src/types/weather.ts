@@ -7,13 +7,30 @@ export type RainbowColor =
   | "indigo"
   | "violet";
 
-export interface WeatherData {
-  cityName: string;
-  temperature: number;
-  feelsLike: number;
-  dewPoint: number;
-  humidity: number;
-  uvIndex: number;
-  windSpeed: number;
-  windDirection: string;
+export interface OpenWeatherApiData {
+  coord: {
+    lat: number;
+    lon: number;
+  };
+  dt: number;
+  main: {
+    feels_like: number;
+    humidity: number;
+    pressure: number;
+    temp: number;
+    temp_max: number;
+    temp_min: number;
+  };
+  name: string;
+  weather: Array<{
+    description: string;
+    icon: string;
+    id: number;
+    main: string;
+  }>;
+  wind: {
+    deg: number;
+    speed: number;
+  };
+  visibility: number;
 }
