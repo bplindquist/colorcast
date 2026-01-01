@@ -21,11 +21,16 @@ export const WeatherCard = ({
   const colors = tailwindColors[color];
 
   return (
-    <div
+    <article
       className={`bg-white rounded-xl p-4 shadow-md border-t-4 ${colors.border} ${className}`}
+      role="listitem"
+      aria-label={`${label}: ${value}`}
     >
       <div className="flex flex-col items-center text-center gap-2">
-        <Icon className={`text-3xl ${colors.text}`} />
+        <Icon
+          className={`text-3xl sm:text-4xl ${colors.text}`}
+          aria-hidden="true"
+        />
         <div className="text-xs sm:text-sm text-gray-500 font-medium">
           {label}
         </div>
@@ -33,7 +38,7 @@ export const WeatherCard = ({
           {value}
         </div>
       </div>
-    </div>
+    </article>
   );
 };
 
@@ -44,20 +49,25 @@ interface TemperatureCardProps {
 export const TemperatureCard = ({ temperature }: TemperatureCardProps) => {
   const color = getColorForValue(temperature, "temperature");
   const colors = tailwindColors[color];
+  const roundedTemp = Math.round(temperature);
 
   return (
-    <div
+    <article
       className={`bg-gradient-to-br ${colors.gradient} rounded-2xl p-6 sm:p-8 text-center shadow-lg relative overflow-hidden`}
+      aria-label={`Current temperature: ${roundedTemp} degrees Fahrenheit`}
     >
       <div className="flex items-center justify-center gap-3 mb-2">
-        <WiDaySunny className="text-5xl sm:text-6xl text-white/90" />
+        <WiDaySunny
+          className="text-5xl sm:text-6xl text-white/90"
+          aria-hidden="true"
+        />
       </div>
       <div className="text-6xl sm:text-8xl font-bold text-white">
-        {temperature}°
+        {roundedTemp}°
       </div>
       <div className="text-lg sm:text-xl text-white/80 mt-2">
         Current Temperature
       </div>
-    </div>
+    </article>
   );
 };
