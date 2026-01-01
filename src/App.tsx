@@ -1,25 +1,25 @@
 import { useState, type ChangeEvent } from "react";
 
 import { Button, Input } from "@heeler/ui";
-import { TbUvIndex } from "react-icons/tb";
 import {
   WiDaySunny,
   WiHumidity,
-  WiRaindrop,
   WiStrongWind,
   WiThermometer,
 } from "react-icons/wi";
 
 import { TemperatureCard, WeatherCard } from "@/components/WeatherCard";
 import { getWeatherByZip } from "@/data/mockWeather";
-import type { WeatherData } from "@/types/weather";
+import type { OpenWeatherApiData } from "@/types/weather";
 import { getColorForValue } from "@/utils/colorScale";
 
 import "./App.css";
 
 export const App = () => {
   const [locationSearch, setLocationSearch] = useState("");
-  const [weatherData, setWeatherData] = useState<WeatherData | null>(null);
+  const [weatherData, setWeatherData] = useState<OpenWeatherApiData | null>(
+    null
+  );
 
   const handleLocationChange = (e: ChangeEvent<HTMLInputElement>) => {
     setLocationSearch(e.target.value);
@@ -31,12 +31,12 @@ export const App = () => {
     }
   };
 
-  const handleSearch = () => {
+  const handleSearch = async () => {
     if (!locationSearch.trim()) {
       return;
     }
 
-    const data = getWeatherByZip(locationSearch);
+    const data = await getWeatherByZip(locationSearch);
     setWeatherData(data);
     setLocationSearch("");
   };
@@ -76,43 +76,32 @@ export const App = () => {
             <div className="text-center">
               <h2 className="text-lg sm:text-xl text-gray-600">Weather for</h2>
               <h3 className="text-2xl sm:text-3xl font-bold text-indigo-600">
-                {weatherData.cityName}
+                {weatherData.name}
               </h3>
             </div>
 
-            <TemperatureCard temperature={weatherData.temperature} />
-
-            <div className="grid grid-cols-2 lg:grid-cols-5 gap-3 sm:gap-4">
+            <TemperatureCard temperature={weatherData.main.temp} />
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4">
               <WeatherCard
                 icon={WiThermometer}
                 label="Feels Like"
-                value={`${weatherData.feelsLike}°F`}
-                color={getColorForValue(weatherData.feelsLike, "temperature")}
-              />
-              <WeatherCard
-                icon={WiRaindrop}
-                label="Dew Point"
-                value={`${weatherData.dewPoint}°F`}
-                color={getColorForValue(weatherData.dewPoint, "dewPoint")}
+                value={`${Math.round(weatherData.main.feels_like)}°F`}
+                color={getColorForValue(
+                  weatherData.main.feels_like,
+                  "temperature"
+                )}
               />
               <WeatherCard
                 icon={WiHumidity}
                 label="Humidity"
-                value={`${weatherData.humidity}%`}
-                color={getColorForValue(weatherData.humidity, "humidity")}
-              />
-              <WeatherCard
-                icon={TbUvIndex}
-                label="UV Index"
-                value={`${weatherData.uvIndex}`}
-                color={getColorForValue(weatherData.uvIndex, "uvIndex")}
+                value={`${weatherData.main.humidity}%`}
+                color={getColorForValue(weatherData.main.humidity, "humidity")}
               />
               <WeatherCard
                 icon={WiStrongWind}
                 label="Wind"
-                value={`${weatherData.windSpeed} mph ${weatherData.windDirection}`}
-                color={getColorForValue(weatherData.windSpeed, "windSpeed")}
-                className="col-span-2 lg:col-span-1"
+                value={`${weatherData.wind.speed} mph from ${weatherData.wind.deg}°`}
+                color={getColorForValue(weatherData.wind.speed, "windSpeed")}
               />
             </div>
           </div>
