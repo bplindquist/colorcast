@@ -20,6 +20,8 @@ export const App = () => {
   const [weatherData, setWeatherData] = useState<OpenWeatherApiData | null>(
     null
   );
+  const [error, setError] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleLocationChange = (e: ChangeEvent<HTMLInputElement>) => {
     setLocationSearch(e.target.value);
@@ -36,8 +38,19 @@ export const App = () => {
       return;
     }
 
-    const data = await getWeatherByZip(locationSearch);
-    setWeatherData(data);
+    setError(null);
+    setIsLoading(true);
+    try {
+      const data = await getWeatherByZip(locationSearch);
+      setWeatherData(data);
+    } catch {
+      setError(
+        `No results found for "${locationSearch}". Please check the zip code and try again.`
+      );
+      setWeatherData(null);
+    } finally {
+      setIsLoading(false);
+    }
     setLocationSearch("");
   };
 
@@ -71,7 +84,42 @@ export const App = () => {
       </header>
 
       <main className="px-4 sm:px-6 py-6 sm:py-8 max-w-5xl mx-auto">
-        {weatherData ? (
+        {isLoading ? (
+          <div className="space-y-6 animate-pulse">
+            <div className="text-center">
+              <div className="h-6 bg-gray-200 rounded w-32 mx-auto mb-2" />
+              <div className="h-8 bg-gray-200 rounded w-48 mx-auto mb-2" />
+              <div className="h-4 bg-gray-200 rounded w-36 mx-auto mb-2" />
+              <div className="h-5 bg-gray-200 rounded w-28 mx-auto" />
+            </div>
+
+            <div className="bg-gray-200 rounded-2xl h-48 sm:h-56" />
+
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4">
+              <div className="bg-white rounded-xl p-4 shadow-md border-t-4 border-gray-200">
+                <div className="flex flex-col items-center gap-2">
+                  <div className="h-8 w-8 bg-gray-200 rounded-full" />
+                  <div className="h-4 bg-gray-200 rounded w-16" />
+                  <div className="h-6 bg-gray-200 rounded w-20" />
+                </div>
+              </div>
+              <div className="bg-white rounded-xl p-4 shadow-md border-t-4 border-gray-200">
+                <div className="flex flex-col items-center gap-2">
+                  <div className="h-8 w-8 bg-gray-200 rounded-full" />
+                  <div className="h-4 bg-gray-200 rounded w-16" />
+                  <div className="h-6 bg-gray-200 rounded w-20" />
+                </div>
+              </div>
+              <div className="bg-white rounded-xl p-4 shadow-md border-t-4 border-gray-200">
+                <div className="flex flex-col items-center gap-2">
+                  <div className="h-8 w-8 bg-gray-200 rounded-full" />
+                  <div className="h-4 bg-gray-200 rounded w-16" />
+                  <div className="h-6 bg-gray-200 rounded w-20" />
+                </div>
+              </div>
+            </div>
+          </div>
+        ) : weatherData ? (
           <div className="space-y-6">
             <div className="text-center">
               <h2 className="text-lg sm:text-xl text-gray-600">Weather for</h2>
@@ -119,13 +167,24 @@ export const App = () => {
             <div className="rainbow-icon-container mb-6">
               <WiDaySunny className="text-6xl sm:text-8xl text-yellow-500 mx-auto" />
             </div>
-            <h2 className="text-xl sm:text-2xl font-semibold text-gray-700 mb-2">
-              Welcome to Colorcast
-            </h2>
-            <p className="text-gray-500 max-w-md mx-auto">
-              Enter a zip code above to get the current weather conditions for
-              any location.
-            </p>
+            {error ? (
+              <>
+                <h2 className="text-xl sm:text-2xl font-semibold text-red-600 mb-2">
+                  Location Not Found
+                </h2>
+                <p className="text-gray-500 max-w-md mx-auto">{error}</p>
+              </>
+            ) : (
+              <>
+                <h2 className="text-xl sm:text-2xl font-semibold text-gray-700 mb-2">
+                  Welcome to Colorcast
+                </h2>
+                <p className="text-gray-500 max-w-md mx-auto">
+                  Enter a zip code above to get the current weather conditions
+                  for any location.
+                </p>
+              </>
+            )}
           </div>
         )}
       </main>
