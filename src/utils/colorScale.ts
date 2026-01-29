@@ -7,36 +7,16 @@ interface ColorScale {
 }
 
 const colorScales: Record<string, ColorScale> = {
-  // Temperature: cold (violet) to hot (red)
-  // 0-20°F: violet, 20-35°F: indigo, 35-50°F: blue, 50-65°F: green, 65-80°F: yellow, 80-95°F: orange, 95+°F: red
   temperature: {
     min: 0,
     max: 110,
     colors: ["violet", "indigo", "blue", "green", "yellow", "orange", "red"],
   },
-  // Dew point comfort scale
-  // <50°F: green (comfortable), 50-60°F: yellow, 60-65°F: orange (humid), 65+°F: red (oppressive)
-  dewPoint: {
-    min: 30,
-    max: 75,
-    colors: ["green", "yellow", "orange", "red"],
-  },
-  // Humidity comfort scale (both extremes are uncomfortable)
-  // 0-20%: orange (too dry), 20-40%: yellow, 40-60%: green (ideal), 60-80%: yellow, 80-100%: red (very humid)
   humidity: {
     min: 0,
     max: 100,
     colors: ["orange", "yellow", "green", "yellow", "red"],
   },
-  // UV Index: EPA scale
-  // 0-2: green (low), 3-5: yellow (moderate), 6-7: orange (high), 8-10: red (very high), 11+: violet (extreme)
-  uvIndex: {
-    min: 0,
-    max: 11,
-    colors: ["green", "green", "yellow", "orange", "red", "violet"],
-  },
-  // Wind speed
-  // 0-10 mph: green (calm), 10-20 mph: yellow (breezy), 20-30 mph: orange (windy), 30+ mph: red (very windy)
   windSpeed: {
     min: 0,
     max: 40,
@@ -46,7 +26,7 @@ const colorScales: Record<string, ColorScale> = {
 
 export const getColorForValue = (
   value: number,
-  scaleKey: string
+  scaleKey: string,
 ): RainbowColor => {
   const scale = colorScales[scaleKey];
   if (!scale) return "blue";
@@ -56,11 +36,12 @@ export const getColorForValue = (
   const normalized = (clampedValue - min) / (max - min);
   const colorIndex = Math.min(
     Math.floor(normalized * colors.length),
-    colors.length - 1
+    colors.length - 1,
   );
 
   return colors[colorIndex];
 };
+
 export const tailwindColors: Record<
   RainbowColor,
   { border: string; text: string; bg: string; gradient: string }

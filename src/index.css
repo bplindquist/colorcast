@@ -1,14 +1,28 @@
 @import "tailwindcss";
+@import "@fontsource/inter/400.css";
+@import "@fontsource/inter/500.css";
+@import "@fontsource/inter/600.css";
+@import "@fontsource/inter/700.css";
+
+:root {
+  --font-display: 'Plus Jakarta Sans', system-ui, sans-serif;
+  --font-body: 'Inter', system-ui, sans-serif;
+}
 
 html {
   overflow-y: scroll;
 }
 
 body {
-  font-family: 'Nunito', sans-serif;
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
-/* Respect user's reduced motion preference */
+.font-display {
+  font-family: var(--font-display);
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
@@ -19,13 +33,11 @@ body {
   }
 }
 
-/* Focus visible styles for better keyboard navigation */
 :focus-visible {
   outline: 2px solid #6366f1;
   outline-offset: 2px;
 }
 
-/* Skip to main content link for keyboard users */
 .skip-link {
   position: absolute;
   top: -40px;
